@@ -6,15 +6,42 @@
 Source:
 https://www.udemy.com/course/unreal-engine-5-create-a-top-down-2d-survivors-style-game
 
-======================================
+===============================================================
 Section 2: Basic Setup
 
-++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 3. Create Project and Player Flipbooks
 
+Importing Textures:
+
+* Eliminate Blurriness:
+  * Open Texture -> Details -> Advanced -> Filter -> Nearest
+
+* Other Textuire Settings:
+  * Right-click -> Sprite Actions -> Apply Paper2D Texture Settings
+    * This makes the background transparent
+
+Extract Sprites from Texture:
+* Reason: You cannot drag a Texture into a scene, but you can with a Sprite
+* Right-click->Sprite Actions->Extract Sprites
+* This opens the Extract Sprites Dialog:
+  * Change Sprite Extract Mode from Auto to Grid:
+    * Auto will produce uneven sprites
+  * You then manually edit the Sprites using Cell Width and Cell Height
+    * This will be dependent upon the source sprite
+  * Click the Extract button and Sprite assets will then be generated in the project
+
+Create Flipbooks (animations) from the Sprites:
+* Right-click the Sprites you want in a Flipbook -> Create Flipbook
+  * NOTE:
+   * Using Asesprite and importing png's and json files makes the Flipbook process easier
+     * The extracted sprites can be named for easier selection
+
+Bulk Edit:
+* Select multiple Flipbooks -> Right-click -> Asset Actions-> Edit Selection in Property Matrix
 
 
-++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 ======================================
