@@ -1,0 +1,20 @@
+
+======================================
+2D Survival Game Notes
+======================================
+
+Source:
+https://www.udemy.com/course/unreal-engine-5-create-a-top-down-2d-survivors-style-game
+
+======================================
+Section 2: Basic Setup
+
+++++++++++++++++++++++++++++++++++++++
+3. Create Project and Player Flipbooks
+
+
+
+++++++++++++++++++++++++++++++++++++++
+
+
+======================================
