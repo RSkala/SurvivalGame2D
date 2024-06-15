@@ -75,5 +75,63 @@ Note:
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+5. Create Player Character
 
+Base Class: Character
+Components:
+* Paper Flipbook
+
+Paper Flipbook:
+* Source Flipbook: Set the player sprite flipbook
+* Rotation:
+  * This project rotated the PaperFlipbook to -90 around X
+  * This basically has the player sprite facing upwards (down +Z axis)
+  * This also means the player character will be moving in the XY Plane 2D space
+
+Capsule Component:
+* Adjusted to fit the player character sprite
+  * Capsule Half Height: 14
+  * Capsule Radius: 14
+* Collision Presets:
+  * Changed from Pawn to Custom
+    * Collision Responses: Ignore (sets all to Ignore)
+    * Object Responses->WorldStatic:  Block
+    * Object Responses->Pawn:  Overlap
+
+Camera:
+* Spring Arm Component + Camera (child)
+* SpringArm Settings:
+  * Rotation: (-90, -90, 0)
+    * This rotates around the Y axis so it is facing down at the player flipbook
+    * This rotates around the X axis so it "twists" so it is aligned properly
+  * Target Arm Length: 1300
+    * With an Orthographic camera, the distance will have no effect on the camera
+    * This is just to get some distance between the player sprite and the camera
+  * Camera Collision -> Do Collision Test:  FALSE
+    * This ensures the camera doesn't collide with any obstacles / objects
+  * Lag -> Enable Camera Lag:  TRUE
+  * Lag -> Camera Lag Speed:  6.0
+* Camera Settings:
+  * Projection Mode: Orthographic
+  * Ortho Width: 512
+    * Note: My Ortho Width was automatically set to 1536, while his was 512
+
+Game Mode:
+* GM_InGame
+* Default Pawn Class: BP_Player
+
+Testing:
+* Camera too close
+* Player character too bright
+
+Fixes:
+* FollowCamera:
+  * Change Ortho Width to 700
+* PaperFlipbook:
+  * Sprite -> Sprite Color: Changed from White to a Gray
+    * Note: There are no lights in the scene
+    * Supposedly, Sprites are still affected by their default color
+    * TODO: Investigate a better solution
+    
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 =====================================================================
