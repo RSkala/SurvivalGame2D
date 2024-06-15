@@ -6,7 +6,7 @@
 Source:
 https://www.udemy.com/course/unreal-engine-5-create-a-top-down-2d-survivors-style-game
 
-===============================================================
+=====================================================================
 Section 2: Basic Setup
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -42,6 +42,38 @@ Bulk Edit:
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4. TileMap and Scaling
+
+Source Tileset:
+https://0x72.itch.io/dungeontileset-ii
+* 0x72_DungeonTilesetII_v1.7.png
+
+Importing the Texture:
+* Right-click->Sprite Actions->Apply Paper2D Texture Settings
+* Open asset -> Details -> Filter -> Nearest
+
+Creating the Tileset:
+* Right-click asset -> Sprite Actions -> Create Tile Set
+
+Tileset Grid Settings:
+* Open Tileset -> Tile Size:
+  * 161x16 for this asset
+
+Create a TileMap from the Tile
+* Right-click the TileSet -> Create Tile Map
+
+Tile Map:
+* Create levels with this object
+* Can have multiple layers
+* Change size of Map using Details -> Setup -> Map Width / Map Height
+* Once a TileMap is created, it can be dragged into the level scene
+
+Note:
+* In this project, it seems to be set up as X-right, Y-down (Top Left Corner)
+* Location of TileMap in scene set to (-500,-500,5)
+  * The height of 5 was supposedly for handling capsule collisions
 
 
-======================================
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+=====================================================================
