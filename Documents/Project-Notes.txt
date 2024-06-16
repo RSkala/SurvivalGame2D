@@ -132,6 +132,84 @@ Fixes:
     * Note: There are no lights in the scene
     * Supposedly, Sprites are still affected by their default color
     * TODO: Investigate a better solution
-    
+      * I've written a local document about this (Unreal Sprite Settings.txt)
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+6. Setup Enhanced Inputs
+
+Steps:
+* Create InputActions
+* Create Input Mapping Context
+* Set Mapping Context on the player controller
+
+
+Inputs:
+WASD:
+
+D
+* Right
+* Modifiers: None
+
+A:
+* Left
+* Modifiers:
+  * Negate => X: true, Y: false, Z: false (only negates X)
+
+S:
+* Down
+* Modifiers:
+  * Swizzle Input Axis Values => Order: YXZ (default, interprets input as Y input)
+
+W:
+* Up
+* Modifiers:
+  * Swizzle Input Axis Values => Order: YXZ (default, interprets input as Y input)
+  * Negate => X: false, Y: true, Z: false (only negates Y)
+
+
+NOTE:
+* Notice that he has Negate on W / Up. This is because of the way he set up the game, where +Y is down. This top-down game where the view is looking down -Z. +X is right, +Y is down. This is equivalent to the "Top" Orthographic view. Personally, I think I would have chosen the "Right" view, where +Z is up, +X is right (i.e. the XZ plane is the 2D game space)
+
+---------------------------------------------------------------
+Handling the Events
+
+* In the player Blueprint (e.g. BP_Player), in the Event Graph, right-click, start typing one of your Input Actions to handle the Enhanced Input Action Event (e.g. IA_Movement)
+
+* Since the Value Type in IA_Movement was set to Axis2D (Vector2D), the "Action Value" will be a Vector2D. Drag and select Break Vector 2D (or Right-click and "Break" the pin) to split it into X and Y values. Note: I prefer to drag and break as it keeps the Event Node cleaner.
+
+---------------------------------------------------------------
+Input Action:
+* Triggered: Player is holding button
+* Started:   Player just pressed the button
+* Completed: Player just released the button
+
+---------------------------------------------------------------
+Applying Movement to the Player Character
+
+In the player Blueprint (BP_Player, which is a Character subclass)
+
+Handling the IA_Movement Enhanced Input Action Event in the Blueprint Event Graph
+
+Horizontal Direction
+* Node: AddMovementInput (inherited from Pawn)
+* We set "World Direction" to (1.0, 0.0, 0.0) 
+  * This is the X-direction
+  * We passed in ActionValX (from the input) into Scale Value
+
+Vertical Direction
+* Node: AddMovementInput (inherited from Pawn)
+* We set "World Direction" to (0.0, 1.0, 0.0)
+  * This is the Y-direction
+  * We passed in ActionValY (from the input) into Scale Value
+
+
+Character Movement Component:
+* There are many values here we can tweak, but only will focus on a few.
+* Character Movement: Walking
+  * Max Walk Speed: Changed from 600cm/s to 100cm/s
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 =====================================================================
