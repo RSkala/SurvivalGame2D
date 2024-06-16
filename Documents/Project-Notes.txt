@@ -208,7 +208,53 @@ Character Movement Component:
 * Character Movement: Walking
   * Max Walk Speed: Changed from 600cm/s to 100cm/s
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+7. Animating Player Character
 
+Note:
+* Marked ActionValX and ActionValY to Private so other derived Blueprints cannot access them.
+
+Animations:
+* Added variable named CharacterAnimations of type String, as a Map of String to PaperFlipbook
+  * Note that we made the PaperFlipbook an Object Reference
+  * Mapped animation names to animation flipbook assets here 
+    * e.g. Idle_Up, Idle_Down, Move_Left, Move_Up, etc
+
+Move State
+* Added asset of type Enumeration (Blueprint -> Enumeration): E_MoveState
+  * This is basically just an Enum
+* Click Add Enumerator to add enumerations
+  * Up, Down, Left, Right
+
+Playing Animation
+* In BP_Player input graph, after the 2nd Add Movement Input Node:
+* Added Sequence for checking Vertical then Horizontal movement. This is a personal preference.
+* Added Variable called MoveState of type E_MoveState
+* Setting MoveState from input value (note: +Y is DOWN and -Y is UP)
+* Added GateNode
+* The animation Gate Node here does the following:
+  * When the user is moving in a single direction then moves in another direction, the player character will keeps its original "facing". For example, if the player is moving directly left, and then presses up while still moving left, the character will continue to face left.
+
+GetProperAnim function:
+* Set to Pure (meaning no Execution Pin, only input arguments or return value)
+* Output: PaperFlipbook
+* Input string "Str" (key for an entry in Character Animations Map)
+  * Expanded Input and Unchecked Pass-by-Reference, Default Value: (left empty)
+  * Now we can input any string manually into the function node
+* When player releases all keys, the animation should be "idle"
+
+Gate Node:
+* This seems to be used so Vertical and Horizontal animations dont keep overriding one another
+* The branch FALSE conditions are mapped to the "Open" gates of the opposite animation directions
+* Once we set a PaperFlipbook direction animation, CLOSE the opposite gate
+* This is all set up so there are no animations overriding one another
+  * TODO: Figure out a cleaner solution
+  * TODO: Does PaperZD make this better? PaperZD actually has PaperZDAnimBlueprints
+
+---------------------------
+Documentation on Gate Node:
+https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/Blueprints/UserGuide/FlowControl/
+https://www.youtube.com/watch?v=utMuBhYLPMo
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
