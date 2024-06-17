@@ -340,9 +340,108 @@ After testing:
   * Changed Capsule Half Height and Radius from 8, 8 to 14, 14
   * Changed Paper Flipbook setting from 1.2 to 2
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+9. Bullet Projectile
+
+Note:
+* Projectile Movement is the component used in UE5 for projectiles
+
+Source Image:
+https://stealthix.itch.io/animated-fires
+* Fires/Fireball_68x9.png
+
+Import, Apply Paper2D Sprite Settings, Filter: Nearest
+Cell Width x Height: 68 x 9
+* There are 60 sprites in this sprite sheet
+
+FB_Fireball
+* FPS to 25
+
+Folder "BPA" (Blueprint Actors)
+* This project is naming actors with BPA_
+
+BPA_Bullet
+* We will use Sphere Collision to detect whether bullet is overlapping target, but we can also use capsule component (not sure why)
+* Add Component -> Sphere Collision
+  * Radius: from 32 to 12
+  * Collision Presets: Custom, Ignore All
+* Add Component -> Capsule Collision
+  * Capsule Radius: 8
+  * Capsule Half Height: 22
+  * Collision Presets: Custom, Ignore All
+    * Object Type: Changed from WorldDynamic to Pawn
+    * Collision Responses:
+      * Pawn: Overlap
+  * Tooltip:  Setup scaling value independent of actor itself
+* Paper Flipbook Component:
+  * Source Flipbook: FB_Fireball
+  * Location: 30,0,10 (this moves it upwards and so ball part is more at center)
+  * Rotation: -90,0,0 (rotates to face upwards)
+    * Note the rotation is completely opposite of our "normal" forward direction
+* Projectile Movement Component
+  * Projectile
+    * Initial Speed: 100
+    * Max Speed: 1000
+    * Rotation Follows Velocity: TRUE (defaults to false)
+    * Projectile Gravity Scale: 0 (so it is not affected by gravity)
+  * Velocity: (0,0,0)
+
+Event Graph:
+* Sphere Component: On Component Begin Overlap
+  * Added Variable TargetTag of type Name
 
 
+BP_Player:
+* Call function SetTimerByFunctionName
+* Function Name:  temp_AutomaticFiring
+
+BPA_Bullet:
+* Added temp function calls to DestroyActor (self) when overlapping an object
+* TargetTag: Made InstanceEditable and ExposeOnSpawn
+
+BP_Player
+In Function: TempAutomaticFiring
+Spawning Bullets:
+* Function call: Convert Mouse Location to World Space
+  * Using this so the player can shoot where the mouse cursor is on the screen
+* Function call: Find LookAt Rotation
+  * Start:  GetActorLocation (BP_Player instance)
+  * Target: Mouse Location (from ConvertMouseLocationToWorldSpace)
+    * This basically gets the vector from the player to the mouse and then creates a rotation
+* Get Rotation X Vector:
+  * In this project we are using Z rotation since the gameplay is in the XY plane and Z is up
+  * Multiply by "AtkVel" (attack velocity)
+    * Default Value:  200
+  * TODO: Figure out what this is getting exactly
+    * We want the X Vector from the rotation because X is FORWARD in Unreal
+    * The equivalent would be something like "Get Forward Vector"
+
+Back in BPA_Bullet
+* Added variable named ProjectileVelocity of type Vector
+  * Instance Editable & Expose on Spawn: TRUE
+* Event BeginPlay:
+  * Get the ProjectileMovement component and call Set Velocity from the ProjectileVelocity in BPA_Bullet
+
+Update:
+* The fireball is facing backwards, so BPA_Bullet PaperFlipbook needed to be rotated 180 degrees around the Z axis (remember Z-axis is UP in this project)
+* The PaperFlipbook also needed to be moved back in the X direction to -25
+
+Update:
+* Mouse cursor not visible
+* Opened PC_InGame (i.e. the PlayerController)
+* Select PC_InGame (Self)
+  * Mouse Interface -> Show Mouse Cursor
+  * In Event BeginPlay:
+    * Set Input Mode Game Only passing Self as the parameter
+* Mouse cursor now visible!
+
+Update:
+* Bullet not hitting the enemy in the game
+* BPA_Bullet -> Sphere -> Collision:
+  * We forgot to set the Collision Object Type to Pawn
+    * (was automatically set to WorldDynamic)
+  * We also forgot to set the Object Responses to Pawn -> Overlap
+* Bullet now colliding with enemy and destroys itself!
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 =====================================================================
