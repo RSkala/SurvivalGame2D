@@ -11,6 +11,7 @@ Section 3: Pooling Framework (Bullets, Items, Mobs)
 
 =====================================================================
 11. Pooling Bullets Part 1
+12. Pooling Bullets Part 2
 
 ------------------------------
 Object Pooling Overview
@@ -46,5 +47,23 @@ Blueprint Function Library:
     * Only use a pure cast when you are certain that the correct object is being casted
       * For example, as above, GetGameInstance -> Cast to 
 
+------------------------------
+Naming Convention:
+
+"L_" for "local variable", e.g. L_AvailableBullet
+
+In the BPA_LevelManager, in function PoolingBullet, we added a "LifeSpan" input parameter.
+However, there already is a UE variable named LifeSpan, so this is not a good name, but we will keep it for now.
+
+------------------------------
+For the Sphere and Collision volumes in the bullet actor (BPA_Bullet):
+We turned off collision while the bullet is in the pool
+We turn the collision back on while the bullet is active.
+We did this in the Collision Responses.
+The only Collision response we wanted while active is Pawn.
+Use Node:
+* Set Collision Response to Channel
+  * Channel: Pawn
+  * New Response: Overlap
 
 =====================================================================
