@@ -1,0 +1,50 @@
+======================================
+2D Survival Game Notes
+======================================
+
+Source:
+https://www.udemy.com/course/unreal-engine-5-create-a-top-down-2d-survivors-style-game
+
+=====================================================================
+Section 3: Pooling Framework (Bullets, Items, Mobs)
+=====================================================================
+
+=====================================================================
+11. Pooling Bullets Part 1
+
+------------------------------
+Object Pooling Overview
+
+Objects to Pool
+* Bullets
+* Mobs
+* Pickable Items
+
+BPA_LevelManager
+1. Monitor active existing instances
+2. Spawn bullets/mobs/pickable items
+3. Reuse existing and Inactive instances
+
+States of Pooling Instance
+* In Pool (Inactive)
+* In Use (Active)
+------------------------------
+GI_SG
+* Survival Game Game Instance
+* Really should name this BP_SGGameInstance
+
+Change GameInstance Class:
+* Project Settings -> Project -> Maps & Modes -> Game Instance -> Game Instance Class
+* This is initialized automatically when the game is started
+
+Blueprint Function Library:
+* I named this BPFL_SG, as per some standard naming conventions
+* Added function GetSGGameInstance
+  * Call GetGameInstance and then Cast to GI_SG.
+  * Right-click -> Convert to Pure Cast 
+    * A Pure cast assumes you have the correct object input and has no handlers if the cast fails.
+    * Only use a pure cast when you are certain that the correct object is being casted
+      * For example, as above, GetGameInstance -> Cast to 
+
+
+=====================================================================
