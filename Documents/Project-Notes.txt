@@ -257,5 +257,92 @@ https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/Blueprints/User
 https://www.youtube.com/watch?v=utMuBhYLPMo
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+8. Create Dummy Enemy
+
+Using the 0x72_Dungeon_TilesetII_v1_7
+* Extract Sprites
+* We just needed one sprite (upper right enemy)
+* Tweaking parameters in Grid category:
+  * Example
+    * Cell Width x Cell Height: 50x50 - manually sets cell sizing
+    * Num Cells X, Y: 1, 1 - manually sets number of cells
+    * Margin X, Y: Sets grid start position
+  * By changing these values, we can Extract any Sprite from a Texture
+    * For example, in my shooter game, I could extract the diamonds from the boss ship
+  * This will be especially useful when dealing with sprites of different sizes
+    * This process seems tedious and painful, trial and error to get grid in proper place.
+    * NOTE: Aseprite might be able to help with this
+
+For the imp enemy in the right corner:
+* Cell Width, Height:  14, 14
+* Num Cells X, Y:      8, 1
+* Margin X, Y:         370, 19
+* Spacing X, Y:        2, 0   
+
+NOTE: Maybe 16x16 without spacing would work better, but I'll leave it be.   
+
+* Deleted first 4 sprites generated. These are the idle anim, which we aren't using.
+
+ENEMY:
+BP_AI, Character:
+* All mobs will use BP_AI
+* Start With Tick Enabled: Set to FALSE
+  * The Tick Event will only be triggered when it is necessary for movement
+* Capsule Component:
+  * Capsule Half Height: Changed from 88 to 8
+  * Capsule Radius: Changed from 34 to 8
+  * Collision Presets: Changed from Pawn to Custom
+    * Clicked Ignore for everything, excpet:
+      * WorldStatic:   Block
+      * WorldDynamic:  Overlap
+      * Pawn:          Overlap
+      * Destructible:  Overlap - Note: We will use this channel for pickup items
+* Added PaperFlipbook Component
+  * Under Capsule Component
+  * Rotation: (-90, 0, 0) (So it is facing up the World +Z)
+  * Location: (0, 0, 5) (So it is raised a little higher than BP_Player Flipbook to avoid flickering)
+  * Scale: (1.2, 1.2, 1.2) (So it is just a little bit bigger than the default)
+  * Advanced:
+    * NOTE: These are optional as we will not be adding any directional lights in the scene
+    * Affect Dynamic Indirect Light: FALSE
+    * Affect Distance Field Lighting: FALSE
+    * Lighting Channels: Unselected all (Only Channel 0 enabled by default)
+    * Static When Not Moveable: FALSE
+  * Collision Presets: NoCollision
+    * We don't need the PaperFlipbook itself to respond to any collision (the CapsuleComponent already has collision, as above)
+* Character Movement Component:
+  * Character Movement: Walking:
+    * Max Walk Speed: 40
+  * Planar Movement
+    * Constrain to Plane:  TRUE
+    * Plane Constraint Axis Setting: Z
+      * Note that this also automatically sets the Plane Constraint Normal to (0,0,1)
+      * This locks the character movement in the Z, meaning it cannot go up or down the Z axis
+* BP_AI (Self)
+  * Actor -> Advanced -> Tags
+    * Added tag "enemy" (all lowercase)
+  * Pawn -> Use Controller Rotation Yaw: FALSE
+    * If this is true, then the actor will rotate when the controller changes its Yaw (rotation around Z axis), which we do NOT want
+    * Note that setting for Pitch and Roll are already disabled by default
+  * Character Movement (Rotation Settings)
+    * Notice that this in the Self NOT the Movement Component!
+    * Note: I dont know why this was pointed out, it wasn't changed that I'm aware of
+  * Pawn -> Auto Possess AI: Changed to "Placed in World or Spawned"
+    * This means no matter how this is spawned, possess by an AI
+
+PROTIP:
+* Click the Gear next to the search and filter to: Show Only Modified Properties
+* This is how we can ensure the proper settings are changed
+* NOTE: This helped me figure out that I accidentally made some changes to BP_Player!
+
+After testing:
+* Changed BP_AI:
+  * Changed Capsule Half Height and Radius from 8, 8 to 14, 14
+  * Changed Paper Flipbook setting from 1.2 to 2
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 =====================================================================
