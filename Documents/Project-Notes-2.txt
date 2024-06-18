@@ -180,3 +180,32 @@ Still in GameInstance (GI_SG):
   * We only "Spawn" the sound ONCE. We keep a reference to it and play that
 
 =====================================================================
+15. Apply Damage to Enemies
+
+Adding Asset Pack:
+Interface & Item Sounds Pack
+https://www.unrealengine.com/marketplace/en-US/product/interface-item-sounds-pack
+
+Copied
+Futuristic_Click_05_Cue.uasset
+C:/Dev/Udemy/SurvivalGame2D/Content/Interface_And_Item_Sounds/Cues/Futuristic_Click_05_Cue.uasset
+
+to SFX and renamed to:
+A_PlayerHit_Cue
+* Class: SFXSoundClass
+
+
+----------------------
+Set Player Dead
+* Replication: REP_NOTIFY
+* While we are not doing networking, we can still utilize the OnRep_Dead function that is created.
+
+Enemy AI On Collision Begin Overlap:
+* Added Set Timer by Event
+* Drag from left red square to create an event
+  * TouchDamage Event
+
+Enemy AI On Collision End Overlap
+* Clear and Invalidate Timer by Handle
+
+=====================================================================
