@@ -67,3 +67,55 @@ Use Node:
   * New Response: Overlap
 
 =====================================================================
+
+13. Combat Interface
+
+Created Blueprint Interface:
+BPI_Combat
+
+BP_AI now implements this Interface
+* Implement a Blueprint Interface:
+  * Class Settings -> Details -> Implemented Interfaces -> Add 
+* Implement BPI functions: Double click in the MyBlueprint window
+
+Handling Knockback:
+* Added function: HandleKnockbackAndColor
+* MovementComponent:  Call Node: StopMovementImmediately
+* Character: Call Node: LaunchCharacter
+  * We checked XYOverride and ZOverride
+    * This means to REPLACE the character velocity instead of adding to it
+* Note: In a Function, we cannot call the Delay Node, so we use SetTimer
+
+
+Function for getting a direction from one position to another:
+GetUnitDirection
+* From 
+* To
+
+KismetMathLibrary.inl:
+
+KISMET_MATH_INLINE
+FVector UKismetMathLibrary::GetDirectionUnitVector(FVector From, FVector To)
+{
+  return (To - From).GetSafeNormal();
+}
+
+
+NOTE - POTENTIAL BUG
+* The enemy is not getting knocked back, regardless of the AppliedForce.
+* We raise the enemy so its collision sphere is above the floor (and not intersecting with it) 
+
+"That's because in Unreal Engine 5.3 I think there is a small bug here."
+"When capsule is completely snap to the blocking volume, it is stuck."
+
+Changes:
+* Moved character height to 22 (so collision is above floor)
+* LaunchCharacter - ZOverride FALSE (I made this change, but not sure it does anything))
+* BP_AI -> CharMoveComp-> Falling Lateral Friction: 2 (I made this change, but not sure it does anything). This was 0 originally.
+* NOTE: We changed Force to 0 in the end.
+
+NOTE:
+* The AI's Capsule Component is set to "Block" on WorldStatic. I will look into that too.
+  * The TM_Floor has CollisionPreset set to "BlockAll"
+  * NOTE: When I set the AI's collision to Overlap, it no longer collided with the floor and knockback worked.
+=====================================================================
