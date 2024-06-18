@@ -118,4 +118,65 @@ NOTE:
 * The AI's Capsule Component is set to "Block" on WorldStatic. I will look into that too.
   * The TM_Floor has CollisionPreset set to "BlockAll"
   * NOTE: When I set the AI's collision to Overlap, it no longer collided with the floor and knockback worked.
+
+=====================================================================
+14. Add Sound Management
+
+Sound Source:
+https://mixkit.co/free-sound-effects/woosh/
+* Dagger Woosh
+
+Import the Sound
+Create a Sound Cue:
+Right-click -> Create Cue
+* This creates a Sound Cue asset
+
+Create Sound Cue:
+He called it Cue_Hit
+Using the "standard" naming conventions:
+* Sound Cue -- Prefix: A_  Suffix: _Cue  
+I am going with:
+* A_Hit_Cue
+
+Sound Cue:
+* In UE5, you can use WAV files directly, but it is better to use Audio Cues as they give you more control
+* Modulator - can change Pitch and Volume
+  * Pitch Min / Max: 1.8, 2.2
+* Output Node:
+  * Volume Multiplier: Set to 0.55
+* You need to create a Sound Class in order to adjust sound Volume during the game:
+
+Right-click -> Audio -> Classes -> Sound Class
+* Note: SC_ belongs to "Sound Concurrency"
+* In naming guide:
+  * Sound Class      No prefix/suffix. Should be put in a folder called SoundClasses
+* He named the class SC_SFX
+* I named it SFXSoundClass
+
+Right-click -> Audio -> Classes -> Sound Class Mix
+* SoundClassMix is a class that can manage other sounds
+* SGSoundClassMix
+* Mix_SG
+  * He named it SCM_SG
+* In the SoundMix, under Sound Classes -> Sound Class Effects
+  * Add your Sound Classes there
+
+Game Instance:
+* Event Init:
+  * Set Base Sound Mix: Mix_SG
+  * Set Sound Mix Class Override: Mix_SG
+    * InSoundMixModifier:  Mix_SG
+    * InSoundClass: SFXSoundClass
+  * Set Sound Mix Class Override: Mix_SG
+    * InSoundMixModifier:  Mix_SG
+    * InSoundClass: BGMSoundClass
+
+Note: I do not know what the above did...
+
+Still in GameInstance (GI_SG):
+* Added function HitSound:
+  * SpawnSound2D: A_Hit_Cue
+  * Added variable HitSoundVar from return of SpawnSound2D
+  * We only "Spawn" the sound ONCE. We keep a reference to it and play that
+
 =====================================================================
