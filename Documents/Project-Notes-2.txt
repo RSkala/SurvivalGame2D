@@ -209,3 +209,109 @@ Enemy AI On Collision End Overlap
 * Clear and Invalidate Timer by Handle
 
 =====================================================================
+16. Display Damaged Number
+
+---------------------------------------------------------
+FONTS:
+
+Downloading Font:
+https://www.1001fonts.com/pixel-fonts.html
+* Using Font "Arcade Classic"
+* File: ARCADECLASSIC.TTF
+
+When importing the font, a popup will appear:
+Font Face Import Options
+"Would you like to create a new Font asset using the imported Font Face as its default font?"
+Click Apply to All and Click Yes
+
+Two Font files will be generated:
+* Font Face (ARCADECLASSIC)
+* Font (ARCADECLASSIC_Font)
+---------------------------------------------------------
+UI
+
+Right-click -> User Interface -> Widget Blueprint -> User Widget
+* There are also subclasses of User Widget selectable
+
+Standard naming of a Widget Blueprint is:
+WBP_
+* WBP_FloatingText
+
+----------------
+WBP_FloatingText:
+* Change DisplayMode from FillScreen to Desired
+  * This gives actual size
+
+[WBP_FloatingText]
+  |- SizeBox
+     * WidthOverride:  80
+     * HeightOverride: 30
+    |- TXT_DMG (TextBlock)
+       * IsVariable: TRUE (So we can reference in script)
+       * Appearance->Font->FontFamily: Select ARCADECLASSIC_Font
+       * Appearance->Font->Size: 40
+       * Justification: Center
+       * SizeBoxSlot->Horiz/Vert Alignments: Center
+
+
+TEXT_DMG Animation:
+* Select the TXT_DMG component in the Hierarchy
+* Window -> Animations (if animation window is not open)
+* Click the +Animation button to add an animation
+  * LeftAnim (text will jump to our left). Select it.
+    * Click +Add to add a Track (in other UE versions it says +Track)
+    * Make sure the TEXT_DMG is selected in the Hierarchy!
+    * Select the widget we want (TXT_DMG), which will be listed at top
+    * Select the new track and click the + on the right side of it
+    * Select Transform (under Render Transform section)
+      * Workflow: Move the time slider to the desired time and change values for that time
+        * e.g. Tranform->Translation will change position
+    * Click the + again and select Appearance->Color and Opacity
+
+More TXT_DMG Settings:
+* Appearance -> Font -> Outline Settings -> Outline Size: 3
+
+Add Custom Event:
+
+UpdateFloatingText
+* In order to call SetColorAndOpacity a LinearColor must call MakeSlateColor in order to pass.
+
+Added a container for the Floating text widget, which is just an Actor subclass:
+BPA_FloatingText
+* Added Widget component:
+  * FloatingTextWidget:
+    * User Interface->
+      * Space: Change from World to Screen
+    * Widget Class: select WBP_FloatingText
+    * Draw at Desired Size: TRUE
+* Actor Tick:
+  * Start with Tick Enabled: FALSE
+    * This is supposed to help with performance
+* Event Graph:
+  * DisplayFloatingText
+    * On the FloatingTextWidget, call Get User Widget Object, then Cast to WBP_FloatingText
+      * Need to do this because this is a COMPONENT on the actor (i.e. WidgetComponent)
+
+
+IMPORTANT:
+* When spawning the BPA_FloatingText actor, you need to call:
+  * AttachActorToComponent
+    * Attach the BPA_FloatingText actor to the PaperFlipBook component
+    * Target: FTActor (Floating Text Actor, instance of BPA_FloatingText)
+    * Parent: PaperFlipBook
+    * Location Rule: Keep World
+    * Rotation Rule: Keep World
+    * Scale Rule:    Keep World
+
+IntegerToText:
+* Use Grouping: FALSE (this is optional)
+
+TEST:
+* Because we added an outline, the text isnt becoming transparent
+* SetColorAndOpacity doesnt work, so we delete that track
+* RenderOpacity:  We use this instead
+  * Rendering -> Render Opacity
+
+
+
+=====================================================================
