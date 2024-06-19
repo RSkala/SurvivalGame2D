@@ -370,5 +370,25 @@ BP_AI:
 
 
 Something with Boss... 16, 31...
+If ID == 16 or 31, then the enemy is some important boss...?
+
+=====================================================================
+18. Fading Out Effect
+
+BP_AI:
+In Hit& Death:
+* Fading:
+* Add Timeline: FadingOutEffect
+  * Change exectution from from Play to Play from Start
+  * Opened, change length from 5.0 to 0.5
+  * Click +Track to add a Track:
+    * Add Float Track (this adds a "float type curve")
+    * Right click area -> Add key to CurveFloat_0
+      * Has Time and Value fields. Set to Time=0, Value=1
+    * Add another key, Set to Time=0.5, Value=0
+  * Click Zoom Horiz and Vert Buttons (next to "Time") to fit area
+  * Select both keys, then Right-click -> Key Interpolation: Auto
+    * This creates a smooth curve
+  * Copy parameter value from material "Disappear" and past into the "Set Scalar Parameter Value" from MI_Transparent
 
 =====================================================================
