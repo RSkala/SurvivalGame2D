@@ -312,6 +312,63 @@ TEST:
 * RenderOpacity:  We use this instead
   * Rendering -> Render Opacity
 
+=====================================================================
+17. Data Table and Enemy Initialization
 
+Struct:
+* Right-click -> Blueprint -> Structure
+
+F_MonsterInfo 
+* He is using F_, but style guides show "S" (no underscore). Some have "F"
+* Actually, changing back to F_ because that's what the official document uses
+
+Data Table:
+* Right-click -> Miscellaneous -> Data Table
+  * Pick Row Structure (we select F_MonsterInfo)
+
+DT_MonsterInfo
+* Click +Add to add a row to the table
+
+In Blueprint, with a DataTable reference:
+BP_AI
+* DT_MonsterInfo -> Get Data Table Row
+* He did some weird stuff here that seemed unnecessary. Maybe to get around a bug?
+* Did he leave the Row Name as "NewRow". seems like an oversight
+* I'm renaming to same as ID (which is "1")
+
+
+---
+Copied DefaultSpriteMaterial from the engine over to Misc for some reason
+C:/Program Files/Epic Games/UE_5.4/Engine/Plugins/2D/Paper2D/Content/DefaultSpriteMaterial.uasset
+
+Copied asset:
+C:/Dev/Udemy/SurvivalGame2D/Content/_SG/Misc/DefaultSpriteMaterial.uasset
+
+Named to: 
+M_ModifiedDefaultSpriteMaterial
+Opened. Hold "1" on keyboard then click. Created some node... has a 0
+* Right-click the Node -> Convert to Parameter
+* Renamed to "Disappear" and set Default Value to 1.0
+* Dragged from pin -> DitherTemporalAA
+  * Will implement this later
+* Hold 'M' key and left-click to create a Multiply Node
+* Connect other multiply and then connect to Opacity Mask (where it was)
+* Click Apply to apply material
+
+Right-click -> Create Material Instance
+* MI_ModifiedDefaultSpriteMaterial
+  * Under Details -> Global Scalar Parameter Values
+    * There is a selection for "Disappear", which we added in the Material above
+    * Disappear: TRUE
+      * Can play around with the value to see it appear and disappear
+      * Set value to 1 if it isnt already
+
+BP_AI:
+* After Timer Return to Pool
+* Create Dynamic Material Instance (Paper Flipbook)
+  * Source Material: MI_ModifiedDefaultSpriteMaterial
+
+
+Something with Boss... 16, 31...
 
 =====================================================================
