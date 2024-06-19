@@ -392,3 +392,55 @@ In Hit& Death:
   * Copy parameter value from material "Disappear" and past into the "Set Scalar Parameter Value" from MI_Transparent
 
 =====================================================================
+19. Enemies Move to Player
+
+Added function
+
+Use DoOnce Node to prevent setting "ToLeft" value over and over
+* TODO: Look into DoOnce Nodes
+
+Calling SetWorldRotation for facing directions
+
+BP_AI
+* When facing RIGHT, our rotation should be (-90, 0, 0)
+* When facing LEFT, our rotation should be (-90, 180, 0)
+
+NOTE:
+* For some reason, he sets it as such:
+* Facing RIGHT: (-90, 0, 0)  (our default)
+* Facing LEFT:  (90, 0 180)
+
+I am going to use my values to see if there's a difference
+
+NOTE:
+* When testing my values, there was a visual "pop" when flipping from left to right and from right to left. I'm not sure why but testing his values.
+UPDATE:
+* Using his rotation values, and the "popping" still occurs.
+
+------------------------
+NavMesh:
+
+Create a Nav Mesh:
+* Open Place Actors Window: 
+  * Window -> Place Actors
+    * Volumes -> Nav Mesh Bounds Volume
+* Drag Nav Mesh Bounds Volume to scene
+* Select the NavMeshBoundsVolume in the scene
+* Reset its world location to 0,0,0
+* Change viewport view direction to Top to look at it
+* Details -> Brush Settings:
+  * Change size to:
+  * X = 2000
+  * Y = 2000
+  * This basically "encloses" the navmesh around the tilemap world we have
+
+PROTIP:
+* Press P to visualize the covered green area of the Nav Mesh!
+
+Project Settings:
+* -> Engine -> Navigation Mesh -> Runtime
+  * Change Runtime Generation from Static to Dynamic
+
+------------------------
+
+=====================================================================
