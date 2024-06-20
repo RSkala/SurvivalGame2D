@@ -444,3 +444,18 @@ Project Settings:
 ------------------------
 
 =====================================================================
+20. Pooling Mobs
+
+PoolingRevive:
+* SetCollisionResponseToChannel: Channel: Pawn, New Response: Overlap
+* SetCollisionObjectType: Channel: Pawn
+
+---
+New Blueprint Enumeration:
+E_MobState
+
+--------------
+Get Num Members in array:  Length
+
+=====================================================================
+
