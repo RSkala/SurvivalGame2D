@@ -335,6 +335,7 @@ BP_AI
 * He did some weird stuff here that seemed unnecessary. Maybe to get around a bug?
 * Did he leave the Row Name as "NewRow". seems like an oversight
 * I'm renaming to same as ID (which is "1")
+* UPDATE: He changes this in a later video.
 
 
 ---
@@ -458,4 +459,45 @@ E_MobState
 Get Num Members in array:  Length
 
 =====================================================================
+21. Spawn Mobs Outside Screen
+
+NOTE:
+* I needed to make some changes in BP_AI::PoolingRevive, as my Blueprint was only spawning one enemy. It seems there was a bug (or I missed something), and I needed to REMOVE spawned enemy from the Pool, which he didnt seem to do (again, or I missed something).
+
+Screen Space for this game: (Note that screen is XY plane, but that doesnt matter here)
+Upper Left Corner:  (0,0)
+Lower Right Corner: (ViewportSize.X, ViewportSize.Y)
+
+In order for a position to be within the screen:
+ScreenPos.X > 0 
+ScreenPos.Y > 0
+ScreenPos.X < ViewportSize.X
+ScreenPos.Y < ViewportSize.Y
+
+In BPFL_SG:
+CheckWithinScreen:
+* Pure
+
+GetPlayerController->ConvertWorldLocationToScreenLocation
+GetViewportSize
+
+Spawning:
+GetRandomLocationInNavigableRadius
+
+------------------------------------
+Supposed there is some bug with height and enemies.
+Again, I wonder if this is due to the "Blocking" collision with the tilemap.
+The tilemap has collision preset BlockAll.
+However, the collision doesn't look like its intersecting with the floor.
+Note that this "fix" is at time 7:08 in the video.
+Fix is in CheckSpawnLocation, when it calls Teleport.
+Adds a Z height offset (presumably to move the collision away from the tileset / floor)
+He does say that this doesnt happen in UE5.2 however.
+
+TODO:
+Investigate how other people have solved collision issues in 2D.
+While it's best to use a "Character", a character automatically has a Capsule Component, which I don't think can be deleted. Can it be hidden?  Can we replace this reliably with a different type of collision?  Does PaperZD help with this? Looking at PaperZDCharacter, it still has a capsule.
+
+=====================================================================
+
 
